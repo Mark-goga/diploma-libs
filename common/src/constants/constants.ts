@@ -1,1 +1,1 @@
-export const PROTO_PATH = "./lib/common/src/proto";
+export const PROTO_PATH = './lib/common/src/proto';

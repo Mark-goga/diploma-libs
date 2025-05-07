@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package common;
+
+message Empty {}
+
+message PaginationDto {
+    int32 page = 1;
+    int32 skip = 2;
+}
+
+message SortingDto {
+    string field = 1;
+    SortDirection direction = 2;
+}
+
+message FilterDto {
+    string field = 1;
+    string value = 2;
+}
+
+message FindManyDto {
+    PaginationDto pagination = 1;
+    SortingDto sorting = 2;
+    repeated FilterDto filters = 3;
+}
+
+enum SortDirection {
+    SORT_DIRECTION_ASC = 0;
+    SORT_DIRECTION_DESC = 1;
+}
+
+message FindOneDocumentDto {
+    string id = 1;
+}
