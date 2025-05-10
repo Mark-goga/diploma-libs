@@ -1,6 +1,7 @@
 import { ValidationError, ValidationPipe } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 import { status } from '@grpc/grpc-js';
+import { GENERAL_ERROR_MESSAGES } from '@lib/src';
 
 export class GrpcValidationPipe extends ValidationPipe {
   constructor() {
@@ -12,7 +13,7 @@ export class GrpcValidationPipe extends ValidationPipe {
 
         return new RpcException({
           code: status.INVALID_ARGUMENT,
-          message: 'Validation failed',
+          message: GENERAL_ERROR_MESSAGES.VALIDATION_ERROR,
           details: JSON.stringify(errors),
         });
       },

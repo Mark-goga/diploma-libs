@@ -6,7 +6,16 @@ message Empty {}
 
 message PaginationDto {
     int32 page = 1;
-    int32 skip = 2;
+    int32 limit = 2;
+}
+
+message PaginationMeta {
+    int32 totalItems = 1;
+    int32 page = 2;
+    int32 limit = 3;
+    int32 totalPages = 4;
+    bool hasNext = 5;
+    bool hasPrev = 6;
 }
 
 message SortingDto {

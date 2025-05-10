@@ -13,8 +13,8 @@ service UserService {
 }
 
 enum Role {
-    ROLE_USER = 0;
-    ROLE_ADMIN = 1;
+    USER = 0;
+    ADMIN = 1;
 }
 
 message UpdateUserDto {
@@ -25,13 +25,13 @@ message UpdateUserDto {
 
 message Users {
     repeated User users = 1;
+    common.PaginationMeta pagination = 2;
 }
 
 message CreateUserDto {
     string name = 1;
     string email = 2;
     string password = 3;
-    Role role = 4;
 }
 
 message User {
