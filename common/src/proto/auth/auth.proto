@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+package auth;
+
+import "common/common.proto";
+import "user/user.proto";
+
+service AuthService {
+    rpc Login (LoginDto) returns (AuthResponse) {}
+    rpc Register (RegisterDto) returns (AuthResponse) {}
+    rpc Refresh (common.Empty) returns (AuthResponse) {}
+    rpc Logout (common.Empty) returns (common.Empty) {}
+    rpc GetSessions (common.Empty) returns (Sessions) {}
+    rpc RemoveSessions (RemoveSessionsDto) returns (common.Empty) {}
+    rpc ValidateToken (ValidateTokenDto) returns (ValidateTokenResponse) {}
+}
+
+message LoginDto {
+    string email = 1;
+    string password = 2;
+}
+
+message RegisterDto {
+    string name = 1;
+    string email = 2;
+    string password = 3;
+}
+
+message RemoveSessionsDto {
+    repeated string ids = 1;
+}
+
+message AuthResponse {
+    string accessToken = 1;
+    string refreshToken = 2;
+}
+
+message Session {
+    string id = 1;
+    string userAgent = 3;
+    string ipAddress = 4;
+}
+
+message Sessions {
+    repeated Session sessions = 1;
+    common.PaginationMeta pagination = 2;
+}
+
+enum TokenType {
+    ACCESS = 0;
+    REFRESH = 1;
+}
+
+message ValidateTokenDto {
+    string token = 1;
+    TokenType type = 2;
+}
+
+message ValidateTokenResponse {
+    user.User user = 1;
+    Session session = 2;
+}

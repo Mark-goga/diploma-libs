@@ -15,15 +15,9 @@ export class GrpcPrismaExceptionFilter implements ExceptionFilter {
 
   catch(exception: Prisma.PrismaClientKnownRequestError): Observable<any> {
     const isDevelopment = CONFIG.NODE_ENV === 'development';
-    this.logger.error(
-      {
-        code: exception.code,
-        message: exception.message,
-        meta: exception.meta,
-        stack: exception.stack,
-      },
-      'Prisma error',
-    );
+    if (isDevelopment) {
+      this.logger.error(exception, 'Prisma error');
+    }
 
     let error: any;
 

@@ -42,3 +42,7 @@ enum SortDirection {
 message FindOneDocumentDto {
     string id = 1;
 }
+
+message SussesResponse {
+    bool susses = 1;
+}
