@@ -12,32 +12,36 @@ export class ExceptionFilter implements NestExceptionFilter {
   });
 
   catch(exception: any): Observable<any> {
-    const errorResponse = {
-      code: status.INTERNAL,
-      message: 'Internal server error',
-      details: 'An unexpected error occurred',
+    const isDevelopment = CONFIG.NODE_ENV === 'development';
+
+    let errorResponse: {
+      code: number;
+      message: string;
+      details: string;
     };
 
-    const isDevelopment = CONFIG.NODE_ENV === 'development';
     if (isDevelopment) {
       this.logger.error(exception, 'General error');
     }
 
     if (exception instanceof RpcException) {
       const error = exception.getError();
-
-      if (error && typeof error === 'object') {
-        if ('code' in error && typeof error.code === 'number') {
-          errorResponse.code = error.code;
-        }
-        if ('message' in error && typeof error.message === 'string') {
-          errorResponse.message = error.message;
-        }
-        if ('details' in error && typeof error.details === 'string') {
-          errorResponse.details = error.details;
-        }
-      }
+      errorResponse = this.getErrorResponse(error);
     } else if (exception && typeof exception === 'object') {
+      errorResponse = this.getErrorResponse(exception);
+    }
+
+    return throwError(() => errorResponse);
+  }
+
+  private getErrorResponse(exception: any) {
+    const errorResponse = {
+      code: status.INTERNAL,
+      message: 'Internal server error',
+      details: 'An unexpected error occurred',
+    };
+
+    if (exception && typeof exception === 'object') {
       if ('code' in exception && typeof exception.code === 'number') {
         errorResponse.code = exception.code;
       }
@@ -49,6 +53,6 @@ export class ExceptionFilter implements NestExceptionFilter {
       }
     }
 
-    return throwError(() => errorResponse);
+    return errorResponse;
   }
 }
