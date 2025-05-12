@@ -29,10 +29,8 @@ export class AuthGuard implements CanActivate, OnModuleInit {
   async canActivate(context: ExecutionContext) {
     const rpcContext = context.switchToRpc();
     const tokenType = this.getTokenTypeFromContext(context);
-    console.log({ tokenType });
 
     const token = this.getToken(context);
-    console.log({ token });
     const { user } = await this.authService
       .validateToken({ token, type: tokenType })
       .toPromise();

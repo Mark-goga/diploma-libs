@@ -31,7 +31,20 @@ export class GrpcPrismaExceptionFilter implements ExceptionFilter {
         details,
       };
     } else if (exception.code === 'P2025') {
-      const details = `${exception.meta?.cause} in model ${exception.meta?.modelName}`;
+      let field = '';
+      let value = '';
+
+      if (exception.meta?.arguments) {
+        const args = exception.meta.arguments;
+        const fieldEntries = Object.entries(args);
+        if (fieldEntries.length > 0) {
+          const [firstField, firstValue] = fieldEntries[0];
+          field = firstField;
+          value = String(firstValue);
+        }
+      }
+
+      const details = `No record found with value ${value} in field ${field} for model ${exception.meta?.modelName}`;
 
       error = {
         code: status.NOT_FOUND,

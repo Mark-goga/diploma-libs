@@ -6,9 +6,9 @@ import "common/common.proto";
 import "user/user.proto";
 
 service AuthService {
-    rpc Login (LoginDto) returns (AuthResponse) {}
-    rpc Register (RegisterDto) returns (AuthResponse) {}
-    rpc Refresh (common.Empty) returns (AuthResponse) {}
+    rpc Login (LoginDto) returns (AuthResponseWithUser) {}
+    rpc Register (RegisterDto) returns (AuthResponseWithUser) {}
+    rpc Refresh (common.Empty) returns (AuthResponseWithUser) {}
     rpc Logout (common.Empty) returns (common.Empty) {}
     rpc GetSessions (common.Empty) returns (Sessions) {}
     rpc RemoveSessions (RemoveSessionsDto) returns (common.Empty) {}
@@ -30,9 +30,10 @@ message RemoveSessionsDto {
     repeated string ids = 1;
 }
 
-message AuthResponse {
+message AuthResponseWithUser {
     string accessToken = 1;
     string refreshToken = 2;
+    user.User user = 3;
 }
 
 message Session {
@@ -43,7 +44,6 @@ message Session {
 
 message Sessions {
     repeated Session sessions = 1;
-    common.PaginationMeta pagination = 2;
 }
 
 enum TokenType {
