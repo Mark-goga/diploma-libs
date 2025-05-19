@@ -38,8 +38,9 @@ message AuthResponseWithUser {
 
 message Session {
     string id = 1;
-    string userAgent = 3;
-    string ipAddress = 4;
+    string userAgent = 2;
+    string ipAddress = 3;
+    string accessToken = 4;
 }
 
 message Sessions {
