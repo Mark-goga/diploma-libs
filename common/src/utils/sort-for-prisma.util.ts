@@ -3,7 +3,7 @@ import { SortingDto } from '@proto/common/common';
 
 export class SortForPrismaUtil {
   static sortForPrisma<T extends CustomObject>(sort: SortingDto): T {
-    if (!sort && !sort.field) {
+    if (!sort && !sort?.field) {
       return {} as T;
     }
 
