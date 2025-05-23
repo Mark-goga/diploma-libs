@@ -49,8 +49,10 @@ message Film {
     string description = 3;
     string director = 4;
     string releaseDate = 5;
-    string genre = 6;
-    string backGroundImageKey = 7;
-    string createdAt = 8;
-    string updatedAt = 9;
+    repeated string genre = 6;
+    int32 estimation = 7;
+    string backGroundImageKey = 8;
+    string avatarImageKey = 9;
+    string createdAt = 10;
+    string updatedAt = 11;
 }

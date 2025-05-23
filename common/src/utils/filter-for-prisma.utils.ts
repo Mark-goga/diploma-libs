@@ -22,4 +22,16 @@ export class FilterUtil {
       return acc;
     }, {} as T);
   }
+
+  static getConfigForArray(value: string) {
+    if (value.includes(',')) {
+      const genres = value.split(',').map((g) => g.trim());
+      return {
+        hasSome: genres,
+      };
+    }
+    return {
+      has: value,
+    };
+  }
 }
