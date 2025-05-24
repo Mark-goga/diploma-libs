@@ -3,11 +3,12 @@ syntax = "proto3";
 package film;
 
 import "common/common.proto";
+import "review/review.proto";
 
 service FilmService {
     rpc CreateFilm (CreateFilmDto) returns (Film) {}
-    rpc FindAll (FindManyFilmsDto) returns (Films) {}
-    rpc FindOne (common.FindOneDocumentDto) returns (Film) {}
+    rpc FindAll (GetFilmsDto) returns (Films) {}
+    rpc FindOne (common.FindOneDocumentDto) returns (FilmWithReviews) {}
     rpc Update (UpdateFilmDto) returns (Film) {}
     rpc Remove (common.FindOneDocumentDto) returns (Film) {}
 }
@@ -31,15 +32,21 @@ message UpdateFilmDto {
     string backGroundImageKey = 7;
 }
 
-message FindManyFilmsDto {
+message GetFilmsDto {
     common.PaginationDto pagination = 1;
+    string search = 2;
     repeated common.FilterDto filters = 3;
-    common.SortingDto sorting = 4;
+    common.SortingDto sort = 4;
 }
 
 message Films {
     repeated Film films = 1;
     common.PaginationMeta pagination = 2;
+}
+
+message FilmWithReviews {
+    Film film = 1;
+    review.Reviews reviews = 2;
 }
 
 message Film {
