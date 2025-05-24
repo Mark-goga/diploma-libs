@@ -6,7 +6,7 @@ import "common/common.proto";
 
 service FilmService {
     rpc CreateFilm (CreateFilmDto) returns (Film) {}
-    rpc FindAll (GetFilmsDto) returns (Films) {}
+    rpc FindAll (FindManyFilmsDto) returns (Films) {}
     rpc FindOne (common.FindOneDocumentDto) returns (Film) {}
     rpc Update (UpdateFilmDto) returns (Film) {}
     rpc Remove (common.FindOneDocumentDto) returns (Film) {}
@@ -31,11 +31,10 @@ message UpdateFilmDto {
     string backGroundImageKey = 7;
 }
 
-message GetFilmsDto {
+message FindManyFilmsDto {
     common.PaginationDto pagination = 1;
-    string search = 2;
     repeated common.FilterDto filters = 3;
-    common.SortingDto sort = 4;
+    common.SortingDto sorting = 4;
 }
 
 message Films {
