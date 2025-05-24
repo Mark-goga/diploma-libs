@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package review;
+
+import "common/common.proto";
+import "user/user.proto";
+
+service ReviewService {
+    rpc CreateReview (CreateReviewDto) returns (Review) {}
+    rpc FindManyReviews (common.FindManyDto) returns (Reviews) {}
+    rpc FindOneReview (common.FindOneDocumentDto) returns (Review) {}
+    rpc FindReviewsByFilm (FindReviewsByFilmDto) returns (Reviews) {}
+    rpc UpdateReview (UpdateReviewDto) returns (Review) {}
+    rpc RemoveReview (common.FindOneDocumentDto) returns (Review) {}
+}
+
+message CreateReviewDto {
+    string filmId = 1;
+    string description = 2;
+    string title = 3;
+    int32 rating = 4;
+}
+
+message UpdateReviewDto {
+    string id = 1;
+    string description = 2;
+    string title = 3;
+    int32 rating = 4;
+}
+
+message FindReviewsByFilmDto {
+    string filmId = 1;
+}
+
+message Reviews {
+    repeated Review reviews = 1;
+    common.PaginationMeta pagination = 2;
+}
+
+message Review {
+    string id = 1;
+    string userId = 2;
+    string filmId = 3;
+    string title = 4;
+    string description = 5;
+    int32 rating = 6;
+    string createdAt = 7;
+    string updatedAt = 8;
+}

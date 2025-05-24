@@ -48,8 +48,10 @@ export interface Film {
   description: string;
   director: string;
   releaseDate: string;
-  genre: string;
+  genre: string[];
+  estimation: number;
   backGroundImageKey: string;
+  avatarImageKey: string;
   createdAt: string;
   updatedAt: string;
 }

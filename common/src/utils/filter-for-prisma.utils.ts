@@ -1,5 +1,8 @@
 import { FilterDto } from '@proto/common/common';
-import { FilterConfig } from '@lib/src';
+import { FilterConfig, GENERAL_ERROR_MESSAGES } from '@lib/src';
+import { RpcException } from '@nestjs/microservices';
+import { status } from '@grpc/grpc-js';
+import { ERROR_MESSAGES } from '@common/constants';
 
 export class FilterUtil {
   static buildPrismaWhere<T extends object>(
@@ -32,6 +35,20 @@ export class FilterUtil {
     }
     return {
       has: value,
+    };
+  }
+
+  static getConfigForNumber(value: string, operator: string = 'equals') {
+    const parsedValue = parseFloat(value);
+    if (isNaN(parsedValue)) {
+      throw new RpcException({
+        code: status.INVALID_ARGUMENT,
+        details: ERROR_MESSAGES.INVALID_ESTIMATION,
+        message: GENERAL_ERROR_MESSAGES.VALIDATION_ERROR,
+      });
+    }
+    return {
+      [operator]: parsedValue,
     };
   }
 }
