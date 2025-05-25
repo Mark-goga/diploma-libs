@@ -36,7 +36,7 @@ message GetFilmsDto {
     common.PaginationDto pagination = 1;
     string search = 2;
     repeated common.FilterDto filters = 3;
-    common.SortingDto sort = 4;
+    common.SortingDto sorting = 4;
 }
 
 message Films {
@@ -46,7 +46,7 @@ message Films {
 
 message FilmWithReviews {
     Film film = 1;
-    review.Reviews reviews = 2;
+    repeated review.Review reviews = 2;
 }
 
 message Film {

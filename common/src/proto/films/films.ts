@@ -14,6 +14,7 @@ import {
   PaginationMeta,
   SortingDto,
 } from '../common/common';
+import { Review } from '../review/review';
 
 export const protobufPackage = 'film';
 
@@ -36,8 +37,9 @@ export interface UpdateFilmDto {
   backGroundImageKey: string;
 }
 
-export interface FindManyDtoValidator {
+export interface GetFilmsDto {
   pagination: PaginationDto | undefined;
+  search: string;
   filters: FilterDto[];
   sorting: SortingDto | undefined;
 }
@@ -45,6 +47,11 @@ export interface FindManyDtoValidator {
 export interface Films {
   films: Film[];
   pagination: PaginationMeta | undefined;
+}
+
+export interface FilmWithReviews {
+  film: Film | undefined;
+  reviews: Review[];
 }
 
 export interface Film {
@@ -66,9 +73,9 @@ export const FILM_PACKAGE_NAME = 'film';
 export interface FilmServiceClient {
   createFilm(request: CreateFilmDto): Observable<Film>;
 
-  findAll(request: FindManyDtoValidator): Observable<Films>;
+  findAll(request: GetFilmsDto): Observable<Films>;
 
-  findOne(request: FindOneDocumentDto): Observable<Film>;
+  findOne(request: FindOneDocumentDto): Observable<FilmWithReviews>;
 
   update(request: UpdateFilmDto): Observable<Film>;
 
@@ -78,11 +85,11 @@ export interface FilmServiceClient {
 export interface FilmServiceController {
   createFilm(request: CreateFilmDto): Promise<Film> | Observable<Film> | Film;
 
-  findAll(
-    request: FindManyDtoValidator,
-  ): Promise<Films> | Observable<Films> | Films;
+  findAll(request: GetFilmsDto): Promise<Films> | Observable<Films> | Films;
 
-  findOne(request: FindOneDocumentDto): Promise<Film> | Observable<Film> | Film;
+  findOne(
+    request: FindOneDocumentDto,
+  ): Promise<FilmWithReviews> | Observable<FilmWithReviews> | FilmWithReviews;
 
   update(request: UpdateFilmDto): Promise<Film> | Observable<Film> | Film;
 
