@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package shared;
+
+message FilmRef {
+    string id = 1;
+    string title = 2;
+    string description = 3;
+    string director = 4;
+    string releaseDate = 5;
+    repeated string genre = 6;
+    int32 estimation = 7;
+    string backGroundImageKey = 8;
+    string avatarImageKey = 9;
+    string createdAt = 10;
+    string updatedAt = 11;
+}
+
+message ReviewRef {
+    string id = 1;
+    string userId = 2;
+    string filmId = 3;
+    string title = 4;
+    string description = 5;
+    int32 rating = 6;
+    string createdAt = 7;
+    string updatedAt = 8;
+}
