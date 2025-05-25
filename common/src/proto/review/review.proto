@@ -3,7 +3,7 @@ syntax = "proto3";
 package review;
 
 import "common/common.proto";
-import "user/user.proto";
+import "shared/shared.proto";
 
 service ReviewService {
     rpc CreateReview (CreateReviewDto) returns (Review) {}
@@ -12,6 +12,7 @@ service ReviewService {
     rpc FindReviewsByFilm (FindReviewsByFilmDto) returns (Reviews) {}
     rpc UpdateReview (UpdateReviewDto) returns (Review) {}
     rpc RemoveReview (common.FindOneDocumentDto) returns (Review) {}
+    rpc FindReviewsByUser (common.FindOneDocumentDto) returns (ReviewsWithFilms) {}
 }
 
 message CreateReviewDto {
@@ -47,3 +48,9 @@ message Review {
     string createdAt = 7;
     string updatedAt = 8;
 }
+
+message ReviewsWithFilms {
+    repeated Review reviews = 1;
+    repeated shared.FilmRef films = 2;
+}
+

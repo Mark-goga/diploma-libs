@@ -3,7 +3,7 @@ syntax = "proto3";
 package film;
 
 import "common/common.proto";
-import "review/review.proto";
+import "shared/shared.proto";
 
 service FilmService {
     rpc CreateFilm (CreateFilmDto) returns (Film) {}
@@ -46,7 +46,7 @@ message Films {
 
 message FilmWithReviews {
     Film film = 1;
-    repeated review.Review reviews = 2;
+    repeated shared.ReviewRef reviews = 2;
 }
 
 message Film {

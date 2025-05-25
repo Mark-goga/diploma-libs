@@ -7,16 +7,12 @@ import { Observable, throwError } from 'rxjs';
 import { CONFIG } from '@common/constants';
 import { GENERAL_ERROR_MESSAGES } from '@lib/src';
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
 @Catch(Prisma.PrismaClientKnownRequestError, Prisma.PrismaClientValidationError)
 export class GrpcPrismaExceptionFilter implements ExceptionFilter {
   private readonly logger = new PinoLogger({
     renameContext: 'GrpcPrismaExceptionFilter',
   });
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
   catch(exception: Prisma.PrismaClientKnownRequestError): Observable<any> {
     const isDevelopment = CONFIG.NODE_ENV === 'development';
     if (isDevelopment) {

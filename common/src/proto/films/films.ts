@@ -5,18 +5,12 @@
 // source: films/films.proto
 
 /* eslint-disable */
-import { GrpcMethod, GrpcStreamMethod } from '@nestjs/microservices';
-import { Observable } from 'rxjs';
-import {
-  FilterDto,
-  FindOneDocumentDto,
-  PaginationDto,
-  PaginationMeta,
-  SortingDto,
-} from '../common/common';
-import { Review } from '../review/review';
+import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
+import { Observable } from "rxjs";
+import { FilterDto, FindOneDocumentDto, PaginationDto, PaginationMeta, SortingDto } from "../common/common";
+import { ReviewRef } from "../shared/shared";
 
-export const protobufPackage = 'film';
+export const protobufPackage = "film";
 
 export interface CreateFilmDto {
   title: string;
@@ -51,7 +45,7 @@ export interface Films {
 
 export interface FilmWithReviews {
   film: Film | undefined;
-  reviews: Review[];
+  reviews: ReviewRef[];
 }
 
 export interface Film {
@@ -68,7 +62,7 @@ export interface Film {
   updatedAt: string;
 }
 
-export const FILM_PACKAGE_NAME = 'film';
+export const FILM_PACKAGE_NAME = "film";
 
 export interface FilmServiceClient {
   createFilm(request: CreateFilmDto): Observable<Film>;
@@ -87,9 +81,7 @@ export interface FilmServiceController {
 
   findAll(request: GetFilmsDto): Promise<Films> | Observable<Films> | Films;
 
-  findOne(
-    request: FindOneDocumentDto,
-  ): Promise<FilmWithReviews> | Observable<FilmWithReviews> | FilmWithReviews;
+  findOne(request: FindOneDocumentDto): Promise<FilmWithReviews> | Observable<FilmWithReviews> | FilmWithReviews;
 
   update(request: UpdateFilmDto): Promise<Film> | Observable<Film> | Film;
 
@@ -98,37 +90,17 @@ export interface FilmServiceController {
 
 export function FilmServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = [
-      'createFilm',
-      'findAll',
-      'findOne',
-      'update',
-      'remove',
-    ];
+    const grpcMethods: string[] = ["createFilm", "findAll", "findOne", "update", "remove"];
     for (const method of grpcMethods) {
-      const descriptor: any = Reflect.getOwnPropertyDescriptor(
-        constructor.prototype,
-        method,
-      );
-      GrpcMethod('FilmService', method)(
-        constructor.prototype[method],
-        method,
-        descriptor,
-      );
+      const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
+      GrpcMethod("FilmService", method)(constructor.prototype[method], method, descriptor);
     }
     const grpcStreamMethods: string[] = [];
     for (const method of grpcStreamMethods) {
-      const descriptor: any = Reflect.getOwnPropertyDescriptor(
-        constructor.prototype,
-        method,
-      );
-      GrpcStreamMethod('FilmService', method)(
-        constructor.prototype[method],
-        method,
-        descriptor,
-      );
+      const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
+      GrpcStreamMethod("FilmService", method)(constructor.prototype[method], method, descriptor);
     }
   };
 }
 
-export const FILM_SERVICE_NAME = 'FilmService';
+export const FILM_SERVICE_NAME = "FilmService";

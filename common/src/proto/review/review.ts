@@ -5,15 +5,12 @@
 // source: review/review.proto
 
 /* eslint-disable */
-import { GrpcMethod, GrpcStreamMethod } from '@nestjs/microservices';
-import { Observable } from 'rxjs';
-import {
-  FindManyDto,
-  FindOneDocumentDto,
-  PaginationMeta,
-} from '../common/common';
+import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
+import { Observable } from "rxjs";
+import { FindManyDto, FindOneDocumentDto, PaginationMeta } from "../common/common";
+import { FilmRef } from "../shared/shared";
 
-export const protobufPackage = 'review';
+export const protobufPackage = "review";
 
 export interface CreateReviewDto {
   filmId: string;
@@ -49,7 +46,12 @@ export interface Review {
   updatedAt: string;
 }
 
-export const REVIEW_PACKAGE_NAME = 'review';
+export interface ReviewsWithFilms {
+  reviews: Review[];
+  films: FilmRef[];
+}
+
+export const REVIEW_PACKAGE_NAME = "review";
 
 export interface ReviewServiceClient {
   createReview(request: CreateReviewDto): Observable<Review>;
@@ -63,68 +65,49 @@ export interface ReviewServiceClient {
   updateReview(request: UpdateReviewDto): Observable<Review>;
 
   removeReview(request: FindOneDocumentDto): Observable<Review>;
+
+  findReviewsByUser(request: FindOneDocumentDto): Observable<ReviewsWithFilms>;
 }
 
 export interface ReviewServiceController {
-  createReview(
-    request: CreateReviewDto,
-  ): Promise<Review> | Observable<Review> | Review;
+  createReview(request: CreateReviewDto): Promise<Review> | Observable<Review> | Review;
 
-  findManyReviews(
-    request: FindManyDto,
-  ): Promise<Reviews> | Observable<Reviews> | Reviews;
+  findManyReviews(request: FindManyDto): Promise<Reviews> | Observable<Reviews> | Reviews;
 
-  findOneReview(
+  findOneReview(request: FindOneDocumentDto): Promise<Review> | Observable<Review> | Review;
+
+  findReviewsByFilm(request: FindReviewsByFilmDto): Promise<Reviews> | Observable<Reviews> | Reviews;
+
+  updateReview(request: UpdateReviewDto): Promise<Review> | Observable<Review> | Review;
+
+  removeReview(request: FindOneDocumentDto): Promise<Review> | Observable<Review> | Review;
+
+  findReviewsByUser(
     request: FindOneDocumentDto,
-  ): Promise<Review> | Observable<Review> | Review;
-
-  findReviewsByFilm(
-    request: FindReviewsByFilmDto,
-  ): Promise<Reviews> | Observable<Reviews> | Reviews;
-
-  updateReview(
-    request: UpdateReviewDto,
-  ): Promise<Review> | Observable<Review> | Review;
-
-  removeReview(
-    request: FindOneDocumentDto,
-  ): Promise<Review> | Observable<Review> | Review;
+  ): Promise<ReviewsWithFilms> | Observable<ReviewsWithFilms> | ReviewsWithFilms;
 }
 
 export function ReviewServiceControllerMethods() {
   return function (constructor: Function) {
     const grpcMethods: string[] = [
-      'createReview',
-      'findManyReviews',
-      'findOneReview',
-      'findReviewsByFilm',
-      'updateReview',
-      'removeReview',
+      "createReview",
+      "findManyReviews",
+      "findOneReview",
+      "findReviewsByFilm",
+      "updateReview",
+      "removeReview",
+      "findReviewsByUser",
     ];
     for (const method of grpcMethods) {
-      const descriptor: any = Reflect.getOwnPropertyDescriptor(
-        constructor.prototype,
-        method,
-      );
-      GrpcMethod('ReviewService', method)(
-        constructor.prototype[method],
-        method,
-        descriptor,
-      );
+      const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
+      GrpcMethod("ReviewService", method)(constructor.prototype[method], method, descriptor);
     }
     const grpcStreamMethods: string[] = [];
     for (const method of grpcStreamMethods) {
-      const descriptor: any = Reflect.getOwnPropertyDescriptor(
-        constructor.prototype,
-        method,
-      );
-      GrpcStreamMethod('ReviewService', method)(
-        constructor.prototype[method],
-        method,
-        descriptor,
-      );
+      const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
+      GrpcStreamMethod("ReviewService", method)(constructor.prototype[method], method, descriptor);
     }
   };
 }
 
-export const REVIEW_SERVICE_NAME = 'ReviewService';
+export const REVIEW_SERVICE_NAME = "ReviewService";
