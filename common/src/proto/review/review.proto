@@ -12,7 +12,7 @@ service ReviewService {
     rpc FindReviewsByFilm (FindReviewsByFilmDto) returns (Reviews) {}
     rpc UpdateReview (UpdateReviewDto) returns (Review) {}
     rpc RemoveReview (common.FindOneDocumentDto) returns (Review) {}
-    rpc FindReviewsByUser (common.FindOneDocumentDto) returns (ReviewsWithFilms) {}
+    rpc FindReviewsByUser (common.FindOneDocumentDto) returns (ArrayOfReviewWithFilm) {}
 }
 
 message CreateReviewDto {
@@ -49,8 +49,17 @@ message Review {
     string updatedAt = 8;
 }
 
-message ReviewsWithFilms {
-    repeated Review reviews = 1;
-    repeated shared.FilmRef films = 2;
+message ReviewWithFilm {
+    string id = 1;
+    string userId = 2;
+    string filmId = 3;
+    string title = 4;
+    string description = 5;
+    int32 rating = 6;
+    string createdAt = 7;
+    string updatedAt = 8;
+    shared.FilmRef film = 9;
 }
-
+message ArrayOfReviewWithFilm {
+    repeated ReviewWithFilm reviews = 1;
+}

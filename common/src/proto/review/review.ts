@@ -46,9 +46,20 @@ export interface Review {
   updatedAt: string;
 }
 
-export interface ReviewsWithFilms {
-  reviews: Review[];
-  films: FilmRef[];
+export interface ReviewWithFilm {
+  id: string;
+  userId: string;
+  filmId: string;
+  title: string;
+  description: string;
+  rating: number;
+  createdAt: string;
+  updatedAt: string;
+  film: FilmRef | undefined;
+}
+
+export interface ArrayOfReviewWithFilm {
+  reviews: ReviewWithFilm[];
 }
 
 export const REVIEW_PACKAGE_NAME = "review";
@@ -66,7 +77,7 @@ export interface ReviewServiceClient {
 
   removeReview(request: FindOneDocumentDto): Observable<Review>;
 
-  findReviewsByUser(request: FindOneDocumentDto): Observable<ReviewsWithFilms>;
+  findReviewsByUser(request: FindOneDocumentDto): Observable<ArrayOfReviewWithFilm>;
 }
 
 export interface ReviewServiceController {
@@ -84,7 +95,7 @@ export interface ReviewServiceController {
 
   findReviewsByUser(
     request: FindOneDocumentDto,
-  ): Promise<ReviewsWithFilms> | Observable<ReviewsWithFilms> | ReviewsWithFilms;
+  ): Promise<ArrayOfReviewWithFilm> | Observable<ArrayOfReviewWithFilm> | ArrayOfReviewWithFilm;
 }
 
 export function ReviewServiceControllerMethods() {
