@@ -13,6 +13,7 @@ service ReviewService {
     rpc UpdateReview (UpdateReviewDto) returns (Review) {}
     rpc RemoveReview (common.FindOneDocumentDto) returns (Review) {}
     rpc FindReviewsByUser (common.FindOneDocumentDto) returns (ArrayOfReviewWithFilm) {}
+    rpc GetPersonalFiltersForFilms (common.FindOneDocumentDto) returns (PersonalFiltersForFilms) {}
 }
 
 message CreateReviewDto {
@@ -62,4 +63,8 @@ message ReviewWithFilm {
 }
 message ArrayOfReviewWithFilm {
     repeated ReviewWithFilm reviews = 1;
+}
+
+message PersonalFiltersForFilms {
+    repeated common.FilterDto filters = 1 ;
 }

@@ -7,7 +7,7 @@
 /* eslint-disable */
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import { Observable } from "rxjs";
-import { FindManyDto, FindOneDocumentDto, PaginationMeta } from "../common/common";
+import { FilterDto, FindManyDto, FindOneDocumentDto, PaginationMeta } from "../common/common";
 import { FilmRef } from "../shared/shared";
 
 export const protobufPackage = "review";
@@ -62,6 +62,10 @@ export interface ArrayOfReviewWithFilm {
   reviews: ReviewWithFilm[];
 }
 
+export interface PersonalFiltersForFilms {
+  filters: FilterDto[];
+}
+
 export const REVIEW_PACKAGE_NAME = "review";
 
 export interface ReviewServiceClient {
@@ -78,6 +82,8 @@ export interface ReviewServiceClient {
   removeReview(request: FindOneDocumentDto): Observable<Review>;
 
   findReviewsByUser(request: FindOneDocumentDto): Observable<ArrayOfReviewWithFilm>;
+
+  getPersonalFiltersForFilms(request: FindOneDocumentDto): Observable<PersonalFiltersForFilms>;
 }
 
 export interface ReviewServiceController {
@@ -96,6 +102,10 @@ export interface ReviewServiceController {
   findReviewsByUser(
     request: FindOneDocumentDto,
   ): Promise<ArrayOfReviewWithFilm> | Observable<ArrayOfReviewWithFilm> | ArrayOfReviewWithFilm;
+
+  getPersonalFiltersForFilms(
+    request: FindOneDocumentDto,
+  ): Promise<PersonalFiltersForFilms> | Observable<PersonalFiltersForFilms> | PersonalFiltersForFilms;
 }
 
 export function ReviewServiceControllerMethods() {
@@ -108,6 +118,7 @@ export function ReviewServiceControllerMethods() {
       "updateReview",
       "removeReview",
       "findReviewsByUser",
+      "getPersonalFiltersForFilms",
     ];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
